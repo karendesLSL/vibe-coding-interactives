@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 1: How to Read a Matrix</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #db2777;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: slideIn 0.3s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; }
+        p { line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem; }
+
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .rival-label { color: var(--secondary); font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+        
+        .matrix-layout {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            color: var(--primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 8px;
+        }
+
+        td, th {
+            width: 130px;
+            height: 90px;
+            text-align: center;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        th { background: #f1f5f9; font-family: inherit; font-size: 0.8rem; color: #64748b; height: 40px; }
+
+        .p1 { color: var(--primary); font-weight: bold; }
+        .p2 { color: var(--secondary); font-weight: bold; }
+
+        .highlight-p1 { background: #dbeafe !important; border-color: var(--primary) !important; transform: scale(1.05); }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-next { background: var(--primary); color: white; }
+        .btn-next:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .btn-prev { background: #e2e8f0; color: #475569; }
+
+        .concept-card {
+            background: #fdf2f8;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.4rem;
+            text-align: center;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        #feedback {
+            text-align: center;
+            font-weight: 600;
+            margin-top: 1rem;
+            height: 1.5rem;
+        }
+    </style>
+</head><body><div class="container"><!-- Slide 1: The Matrix Concept -->
+<div class="slide active" id="s1">
+<h1>Step 1: The Choice Map</h1>
+<p>In Game Theory, we use a <strong>Payoff Matrix</strong> to visualize how your decisions interact with someone else's.</p>
+<div class="matrix-container">
+<div class="rival-label">The Other Person (Columns)</div>
+<div class="matrix-layout">
+<div class="user-label">You (Rows)</div>
+<table>
+<tbody>
+<tr>
+<th></th>
+<th>Choice A</th>
+<th>Choice B</th>
+</tr>
+<tr>
+<th>Option 1</th>
+<td>?, ?</td>
+<td>?, ?</td>
+</tr>
+<tr>
+<th>Option 2</th>
+<td>?, ?</td>
+<td>?, ?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>You control the <strong>Rows</strong>. They control the <strong>Columns</strong>. The four boxes represent every possible reality that could occur.</p>
+<div class="nav-bar">
+<div></div>
+<button class="btn-next" onclick="move(2)">Next: Understanding Payoffs</button></div>
+</div>
+<!-- Slide 2: What are Payoffs? -->
+<div class="slide" id="s2">
+<h1>Step 2: What are "Payoffs"?</h1>
+<p>The numbers in the boxes aren't always just dollars. They represent <strong>Utility</strong>—a measure of how "happy" or "satisfied" a player is with an outcome.</p>
+<div class="concept-card"><strong>Why no units?</strong> Because payoffs represent a ranking of outcomes. A payoff of "10" is simply better than "5." It could mean 10 apples, 10 dollars, or 10 minutes of saved time.</div>
+<div class="matrix-container">
+<table>
+<tbody>
+<tr>
+<td style="width: 200px; height: 120px; font-size: 2rem; border-color: #cbd5e1;"><span class="p1">10</span>, <span class="p2">5</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>When you see <strong>(10, 5)</strong>:</p>
+<ul>
+<li>The <span class="p1">First Number (10)</span> is always for the <strong>Row Player (You)</strong>.</li>
+<li>The <span class="p2">Second Number (5)</span> is always for the <strong>Column Player (Them)</strong>.</li>
+</ul>
+<div class="nav-bar"><button class="btn-prev" onclick="move(1)">Back</button> <button class="btn-next" onclick="move(3)">Next: Practice</button></div>
+</div>
+<!-- Slide 3: Interactive Practice -->
+<div class="slide" id="s3">
+<h1>Step 3: Scenario Practice</h1>
+<p><strong>The Scenario:</strong> You and a rival are deciding whether to <strong>Advertise</strong> or <strong>Save</strong> money. Advertising attracts customers, but it's expensive.</p>
+<div class="matrix-container">
+<div class="rival-label">Rival Company</div>
+<div class="matrix-layout">
+<div class="user-label">Your Company</div>
+<table id="practice-table">
+<tbody>
+<tr>
+<th></th>
+<th>Advertise</th>
+<th>Save</th>
+</tr>
+<tr>
+<th>Advertise</th>
+<td>5, 5</td>
+<td id="cell-hint">20, 2</td>
+</tr>
+<tr id="row-target">
+<th>Save</th>
+<td>2, 20</td>
+<td>12, 12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>The Challenge:</strong> If <u>you</u> choose to <strong>Advertise</strong> and your <u>rival</u> chooses to <strong>Save</strong> money, what is <strong>YOUR</strong> payoff?</p>
+<div class="input-group"><input type="number" id="payoffInput" placeholder="?"> <button class="btn-next" onclick="checkAnswer()">Check Work</button></div>
+<div id="feedback"></div>
+<div class="nav-bar"><button class="btn-prev" onclick="move(2)">Back</button> <button class="btn-next" id="final-btn" style="display: none;" onclick="move(4)">Finish</button></div>
+</div>
+<!-- Slide 4: Conclusion -->
+<div class="slide" id="s4">
+<h1>Class 1 Complete!</h1>
+<p>You've successfully decoded the language of Game Theory.</p>
+<div class="concept-card" style="background: #eff6ff; border-color: var(--primary);">
+<p><strong>Key Takeaways:</strong></p>
+<ul>
+<li><strong>Rows</strong> are yours; <strong>Columns</strong> are theirs.</li>
+<li><strong>Payoffs</strong> represent preference/utility, not just cash.</li>
+<li>In <strong>(A, B)</strong>, A belongs to the row and B belongs to the column.</li>
+</ul>
+</div>
+<p>Next time, we'll ask: <em>"Knowing these payoffs, what is the smartest move to make?"</em></p>
+<button class="btn-next" style="width: 100%;" onclick="location.reload()">Restart Lesson</button></div>
+</div>
+<p><script>
+    function move(slideId) {
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+        document.getElementById('s' + slideId).classList.add('active');
+        
+        // Reset feedback if returning
+        if (slideId === 3) {
+            document.getElementById('payoffInput').value = '';
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('cell-hint').classList.remove('highlight-p1');
+            document.getElementById('final-btn').style.display = 'none';
+        }
+    }
+
+    function checkAnswer() {
+        const val = document.getElementById('payoffInput').value;
+        const feedback = document.getElementById('feedback');
+        const hintCell = document.getElementById('cell-hint');
+        
+        if (val === "20") {
+            feedback.innerText = "Correct! 20 is the first number in the intersection.";
+            feedback.style.color = "var(--primary)";
+            hintCell.classList.add('highlight-p1');
+            document.getElementById('final-btn').style.display = "block";
+        } else if (val === "2") {
+            feedback.innerText = "Close! 2 is your RIVAL'S payoff. Remember, you are the first number.";
+            feedback.style.color = "#e11d48";
+            hintCell.classList.remove('highlight-p1');
+        } else {
+            feedback.innerText = "Not quite. Look at the top row (Advertise) and the right column (Save).";
+            feedback.style.color = "#e11d48";
+            hintCell.classList.remove('highlight-p1');
+        }
+    }
+</script></p></body></html>
