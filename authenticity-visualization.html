@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBR Data: The Authenticity Explosion</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --hbr-red: #d50032; /* Iconic HBR Red */
+            --text-main: #333333;
+            --text-light: #666666;
+            --bg-body: #ffffff;
+            --bg-panel: #f3f3f3;
+        }
+
+        body {
+            font-family: 'Georgia', serif; /* Serif font matches HBR style */
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            border-bottom: 4px solid var(--text-main);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Arial', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .citation {
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9rem;
+            color: var(--hbr-red);
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+
+        /* The Interactive Analysis Panel */
+        #analysis-panel {
+            background-color: var(--bg-panel);
+            padding: 30px;
+            border-left: 8px solid var(--hbr-red);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        #panel-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        #panel-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .stat-highlight {
+            font-weight: bold;
+            color: var(--hbr-red);
+        }
+
+        .instruction {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: -30px;
+            margin-bottom: 30px;
+        }
+
+    </style>
+</head><body><div class="container"><header><span class="citation">Based on "The Authenticity Paradox" by Herminia Ibarra (HBR 2015)</span>
+<h1>Why Companies Are Pushing Authenticity</h1>
+</header>
+<div class="chart-wrapper"><canvas id="hbrChart"></canvas></div>
+<p class="instruction">HOVER OVER THE DATA POINTS TO REVEAL IBARRA'S ANALYSIS</p>
+<div id="analysis-panel">
+<h2 id="panel-title">The "Authenticity" Industry</h2>
+<p id="panel-text">Since 2008, the number of articles mentioning "authenticity" in headlines has risen dramatically. Managers can now choose from countless books and workshops on how to be "more authentic."</p>
+</div>
+</div>
+<p><script>
+    // --- DATA SOURCE: PAGE 6 of "The Authenticity Paradox" PDF ---
+    // The values are estimated based on the visual line graph provided in the text.
+    const hbrData = [
+        { 
+            year: 2003, 
+            val: 100, 
+            title: "The Early Baseline", 
+            desc: "In the early 2000s, authenticity was a topic, but not yet the dominant 'gold standard' industry it would become." 
+        },
+        { 
+            year: 2004, 
+            val: 170, 
+            title: "Initial Interest", 
+            desc: "Interest spikes, possibly linked to post-Enron corporate governance reforms, but the trend remains volatile." 
+        },
+        { 
+            year: 2005, 
+            val: 110, 
+            title: "Volatility", 
+            desc: "Usage fluctuates. The concept is still competing with other leadership buzzwords." 
+        },
+        { 
+            year: 2006, 
+            val: 160, 
+            title: "Steady Interest", 
+            desc: "Another peak in interest as leadership literature begins to focus more on 'soft skills'." 
+        },
+        { 
+            year: 2007, 
+            val: 100, 
+            title: "Pre-Recession", 
+            desc: "The numbers dip back to baseline levels just before the global financial crisis." 
+        },
+        { 
+            year: 2008, 
+            val: 90, 
+            title: "The Turning Point", 
+            desc: "Ibarra notes: 'Since 2008 the number of articles that mention the word authenticity... has risen dramatically overall.' This year marks the start of the upward trend." 
+        },
+        { 
+            year: 2009, 
+            val: 90, 
+            title: "Post-Crisis lull", 
+            desc: "Immediately following the crash, the focus was likely on survival, but the seeds for a 'trust crisis' were sown." 
+        },
+        { 
+            year: 2010, 
+            val: 150, 
+            title: "The Recovery Rise", 
+            desc: "As the economy stabilizes, the conversation shifts to how leaders can rebuild trust." 
+        },
+        { 
+            year: 2011, 
+            val: 155, 
+            title: "Sustained Growth", 
+            desc: "The concept gains traction as a permanent fixture in management theory." 
+        },
+        { 
+            year: 2012, 
+            val: 270, 
+            title: "The Trust Crisis", 
+            desc: "The All-Time High. Ibarra cites the Edelman Trust Barometer: 'Trust in business leaders fell to an all-time low in 2012.' Only 18% of people believed leaders told the truth." 
+        },
+        { 
+            year: 2013, 
+            val: 190, 
+            title: "The Engagement Crisis", 
+            desc: "Ibarra links high interest to low morale. A 2013 Gallup poll found only 13% of employees were engaged. Companies pushed 'authenticity' as the solution to burnout." 
+        }
+    ];
+
+    // --- CHART CONFIGURATION ---
+    const ctx = document.getElementById('hbrChart').getContext('2d');
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: hbrData.map(d => d.year),
+            datasets: [{
+                label: 'Articles Mentioning Authenticity',
+                data: hbrData.map(d => d.val),
+                // Styling to match the HBR Red/White aesthetic
+                borderColor: '#d50032', 
+                backgroundColor: 'rgba(213, 0, 50, 0.05)',
+                borderWidth: 4,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#d50032',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 9,
+                fill: true,
+                tension: 0 // Sharp lines as seen in the PDF graph
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#333',
+                    titleFont: { family: 'Arial', size: 14 },
+                    bodyFont: { family: 'Arial', size: 13 },
+                    padding: 10,
+                    callbacks: {
+                        label: (context) => `Articles: ~${context.parsed.y}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 300, // Matches the Y-axis scale in the PDF (0-300)
+                    grid: { color: '#f0f0f0' },
+                    ticks: { font: { family: 'Arial' } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: 'Arial' } }
+                }
+            },
+            // --- INTERACTIVITY ---
+            onHover: (e, activeEls) => {
+                const title = document.getElementById('panel-title');
+                const text = document.getElementById('panel-text');
+                const panel = document.getElementById('analysis-panel');
+
+                if (activeEls.length > 0) {
+                    const idx = activeEls[0].index;
+                    const data = hbrData[idx];
+
+                    title.innerText = `${data.year}: ${data.title}`;
+                    text.innerText = data.desc;
+                    panel.style.borderLeftColor = "#d50032"; // Active state
+                }
+            }
+        }
+    });
+</script></p></body></html>
