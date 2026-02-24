@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Batch Size Simulation</title>
+    
+    <!-- Load Tailwind CSS ONLY (No React, No Babel) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: sans-serif; }
+    </style>
+</head><body class="bg-slate-100 text-slate-900 font-sans"><div class="max-w-4xl mx-auto min-h-screen bg-white shadow-xl flex flex-col"><!-- Header --><header class="bg-slate-900 text-white p-6">
+<div class="flex items-center gap-3 mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+<h1 class="text-2xl font-bold">Operations: Batch Size &amp; Flow Time</h1>
+</div>
+<p class="text-slate-400 max-w-2xl">Interactive companion for Lesson 2: The Airport Scenario.</p>
+</header><!-- Content Area --><main class="flex-1 p-6 md:p-8 overflow-y-auto">
+<div class="space-y-6"><!-- PROCESS FLOW DIAGRAM -->
+<div class="bg-white p-5 md:p-6 rounded-lg border border-slate-200 shadow-sm">
+<h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Process Flow Map</h3>
+<div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0 text-center text-sm"><!-- Step 1: Deplaning -->
+<div class="bg-slate-50 border border-slate-200 rounded-lg p-3 flex-1 w-full relative group">
+<div class="font-bold text-slate-700">1. Deplaning</div>
+<div class="text-xs text-slate-500 mt-1 font-mono">Rate: 10 pax/minute</div>
+</div>
+<!-- Arrow -->
+<div class="text-slate-300 rotate-90 md:rotate-0 p-1 md:p-2 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+<!-- Step 2: Bus Loading -->
+<div class="bg-blue-50 border border-blue-200 rounded-lg p-3 flex-1 w-full border-dashed border-2">
+<div class="font-bold text-blue-800">2. Bus Loading</div>
+<div class="text-xs text-blue-600 mt-1 font-mono">Waits for Batch Size</div>
+</div>
+<!-- Arrow -->
+<div class="text-slate-300 rotate-90 md:rotate-0 p-1 md:p-2 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+<!-- Step 3: Transit -->
+<div class="bg-slate-50 border border-slate-200 rounded-lg p-3 flex-1 w-full">
+<div class="font-bold text-slate-700">3. Bus Transit</div>
+<div class="text-xs text-slate-500 mt-1 font-mono">Time: 10 minutes</div>
+</div>
+<!-- Arrow -->
+<div class="text-slate-300 rotate-90 md:rotate-0 p-1 md:p-2 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+<!-- Step 4: Immigration -->
+<div class="bg-indigo-50 border border-indigo-200 rounded-lg p-3 flex-1 w-full">
+<div class="font-bold text-indigo-800">4. Immigration</div>
+<div class="text-xs text-indigo-600 mt-1 font-mono flex items-center justify-center gap-1">Rate: 5 pax/minute <span class="bg-red-100 text-red-600 text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider" title="Slowest step">Bottleneck</span></div>
+</div>
+</div>
+</div>
+<div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+<h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg> Simulation Controls</h3>
+<p class="text-slate-600 mb-6">300 passengers need to process through immigration. Use the slider to change how many passengers fill a bus before it leaves.</p>
+<!-- Controls -->
+<div class="flex flex-col md:flex-row gap-8 items-center justify-between mb-8">
+<div class="w-full md:w-1/2 space-y-4">
+<div class="flex justify-between items-center mb-1"><label class="block text-sm font-medium text-slate-700"> Bus Batch Size: <span id="batchSizeDisplay" class="text-blue-600 font-bold text-lg">300</span> passengers </label> <span id="totalBusesDisplay" class="text-sm font-medium text-slate-500 bg-slate-200 px-2 py-1 rounded"> Total Buses: 1 </span></div>
+<input id="batchSizeInput" type="range" min="10" max="300" step="10" value="300" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+<div class="flex justify-between text-xs text-slate-500"><span>10 (Frequent Trips)</span> <span>300 (Wait for Everyone)</span></div>
+</div>
+<div class="flex gap-4"><button id="playBtn" class="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-300"> <!-- Icon injected via JS --> Start Simulation </button> <button id="resetBtn" class="px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:bg-slate-50"> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg> Reset </button></div>
+</div>
+<!-- VISUALIZATION AREA -->
+<div class="bg-white border border-slate-200 rounded-xl p-4 md:p-8 space-y-6">
+<div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+<div>Deplaning</div>
+<div>Transit (<span id="transitCountDisplay">0</span> buses)</div>
+<div>Immigration</div>
+</div>
+<div class="relative flex items-center justify-between gap-4 h-32"><!-- ZONE 1: PLANE -->
+<div class="w-24 flex flex-col items-center justify-center bg-slate-100 rounded-lg h-full border-2 border-slate-200 relative z-10"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="text-slate-500 mb-2"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"></path></svg>
+<div id="planeCountDisplay" class="text-2xl font-bold text-slate-700">300</div>
+<div class="text-[10px] text-slate-500 text-center px-1">Passengers Waiting</div>
+<!-- Loading Bus Indicator -->
+<div id="loadingBusDisplay" style="display: none;" class="absolute -top-3 -right-6 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full flex items-center justify-center text-[10px] uppercase tracking-wide font-bold shadow-sm border border-blue-300 whitespace-nowrap z-20 animate-pulse">Loading: 0</div>
+</div>
+<!-- ZONE 2: ROAD -->
+<div id="roadDisplay" class="flex-1 bg-slate-100 rounded-lg h-12 relative overflow-hidden mx-4 border-b-4 border-slate-300"><!-- Road markings -->
+<div class="absolute top-1/2 left-0 w-full border-t-2 border-dashed border-slate-300"></div>
+<!-- Buses injected via JS --></div>
+<!-- ZONE 3: IMMIGRATION -->
+<div class="w-24 flex flex-col items-center justify-center bg-indigo-50 rounded-lg h-full border-2 border-indigo-100 relative z-10"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500 mb-2"><line x1="3" y1="21" x2="21" y2="21"></line><path d="M6 21V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14"></path><path d="M9 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10"></path></svg> <!-- Queue Indicator -->
+<div id="queueDisplay" style="display: none;" class="absolute -top-3 -right-6 bg-red-500 text-white px-2 py-0.5 rounded-full flex items-center justify-center text-[10px] uppercase tracking-wide font-bold shadow-sm border border-red-600 whitespace-nowrap z-20">Queue: 0</div>
+<div id="processedDisplay" class="text-2xl font-bold text-indigo-700">0</div>
+<div class="text-[10px] text-indigo-500 text-center px-1">Processed</div>
+</div>
+</div>
+<!-- Metrics -->
+<div class="flex justify-between items-center pt-4 border-t border-slate-100">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+<div class="flex flex-col"><span class="text-xs text-slate-500 uppercase font-bold">Total Flow Time</span> <span id="timeElapsedDisplay" class="font-mono text-xl text-slate-900 font-bold">0 minutes</span></div>
+<div class="flex flex-col"><span class="text-xs text-slate-500 uppercase font-bold">Bottleneck Idle</span> <span id="idleTimeDisplay" class="font-mono text-xl text-red-600 font-bold">0 minutes</span></div>
+</div>
+<div id="doneBanner" style="display: none;" class="flex items-center gap-2 text-green-600 font-bold bg-green-50 px-4 py-2 rounded-lg animate-bounce shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Done!</div>
+</div>
+</div>
+<!-- RESULTS TABLE -->
+<div id="historySection" style="display: none;" class="bg-white border border-slate-200 rounded-xl overflow-hidden mt-6">
+<div class="flex items-center justify-between p-4 bg-slate-50 border-b border-slate-200">
+<h4 class="font-bold text-slate-700">Simulation Results</h4>
+<button id="clearHistoryBtn" class="text-xs text-red-500 hover:text-red-700 font-medium flex items-center gap-1"> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Clear Table </button></div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-50 text-slate-500 font-medium border-b border-slate-200">
+<tr>
+<th class="px-6 py-3">Run #</th>
+<th class="px-6 py-3">Bus Batch Size</th>
+<th class="px-6 py-3">Total Buses</th>
+<th class="px-6 py-3">Total Flow Time</th>
+<th class="px-6 py-3 text-red-600">Bottleneck Idle Time</th>
+</tr>
+</thead>
+<tbody id="historyTableBody" class="divide-y divide-slate-100"><!-- Rows injected via JS --></tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex gap-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-600 shrink-0 mt-1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+<p class="text-sm text-yellow-800"><strong>Observation:</strong> Watch the <strong>Bottleneck Idle Time</strong>. When Batch Size is large (300), the immigration officer sits idle for a long time waiting for the bus. Smaller batches reduce this idle time, lowering the total Flow Time.</p>
+</div>
+</div>
+</main><!-- Footer --><footer class="p-6 border-t border-slate-200 bg-slate-50 text-center mt-auto">
+<p class="text-sm text-slate-400">Interactive Lesson Companion • Operations Management Series</p>
+</footer></div>
+<!-- NATIVE JAVASCRIPT LOGIC (No React, No Babel required) -->
+<p><script>
+        // --- Configuration & Constants ---
+        const TOTAL_PASSENGERS = 300;
+        const BOARDING_RATE = 10; 
+        const TRAVEL_TIME = 10;   
+        const PROCESS_RATE = 5;   
+        const SIMULATION_SPEED = 200; // ms per tick
+
+        // --- SVGs for JS injection ---
+        const Icons = {
+            Play: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`,
+            Pause: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`,
+            Truck: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>`
+        };
+
+        // --- Application State ---
+        let state = {
+            batchSize: 300,
+            isPlaying: false,
+            timeElapsed: 0,
+            planeCount: TOTAL_PASSENGERS,
+            loadingBusLoad: 0,
+            travelingBuses: [],
+            immigrationQueue: 0,
+            processedCount: 0,
+            immigrationIdleTime: 0,
+            history: []
+        };
+
+        let simInterval = null;
+
+        // --- DOM Elements ---
+        const dom = {
+            batchSizeInput: document.getElementById('batchSizeInput'),
+            batchSizeDisplay: document.getElementById('batchSizeDisplay'),
+            totalBusesDisplay: document.getElementById('totalBusesDisplay'),
+            playBtn: document.getElementById('playBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            transitCountDisplay: document.getElementById('transitCountDisplay'),
+            planeCountDisplay: document.getElementById('planeCountDisplay'),
+            loadingBusDisplay: document.getElementById('loadingBusDisplay'),
+            roadDisplay: document.getElementById('roadDisplay'),
+            queueDisplay: document.getElementById('queueDisplay'),
+            processedDisplay: document.getElementById('processedDisplay'),
+            timeElapsedDisplay: document.getElementById('timeElapsedDisplay'),
+            idleTimeDisplay: document.getElementById('idleTimeDisplay'),
+            doneBanner: document.getElementById('doneBanner'),
+            historySection: document.getElementById('historySection'),
+            historyTableBody: document.getElementById('historyTableBody'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn')
+        };
+
+        // --- Core Functions ---
+
+        function updateDOM() {
+            // Controls
+            dom.batchSizeDisplay.innerText = state.batchSize;
+            dom.totalBusesDisplay.innerText = `Total Buses: ${Math.ceil(TOTAL_PASSENGERS / state.batchSize)}`;
+            dom.batchSizeInput.value = state.batchSize;
+            dom.batchSizeInput.disabled = state.isPlaying;
+
+            // Play Button
+            dom.playBtn.innerHTML = state.isPlaying 
+                ? `${Icons.Pause} Pause` 
+                : `${Icons.Play} Start Simulation`;
+
+            // Zone 1: Plane
+            dom.planeCountDisplay.innerText = state.planeCount;
+            if (state.loadingBusLoad > 0) {
+                dom.loadingBusDisplay.innerText = `Loading: ${state.loadingBusLoad}`;
+                dom.loadingBusDisplay.style.display = 'block';
+            } else {
+                dom.loadingBusDisplay.style.display = 'none';
+            }
+
+            // Zone 2: Road
+            dom.transitCountDisplay.innerText = state.travelingBuses.length;
+            dom.roadDisplay.innerHTML = '<div class="absolute top-1/2 left-0 w-full border-t-2 border-dashed border-slate-300"></div>';
+            state.travelingBuses.forEach(bus => {
+                const busEl = document.createElement('div');
+                busEl.className = 'absolute top-1/2 -translate-y-1/2 transition-all duration-100 ease-linear flex flex-col items-center';
+                busEl.style.left = `${bus.progress}%`;
+                busEl.style.transform = `translate(-50%, -50%)`;
+                busEl.innerHTML = `${Icons.Truck} <span class="text-[10px] font-bold bg-blue-600 text-white px-1 rounded-full">${bus.load}</span>`;
+                dom.roadDisplay.appendChild(busEl);
+            });
+
+            // Zone 3: Immigration
+            dom.processedDisplay.innerText = state.processedCount;
+            if (state.immigrationQueue > 0) {
+                dom.queueDisplay.innerText = `Queue: ${state.immigrationQueue}`;
+                dom.queueDisplay.style.display = 'flex';
+            } else {
+                dom.queueDisplay.style.display = 'none';
+            }
+
+            // Metrics
+            dom.timeElapsedDisplay.innerText = `${state.timeElapsed} minutes`;
+            dom.idleTimeDisplay.innerText = `${state.immigrationIdleTime} minutes`;
+            dom.doneBanner.style.display = (state.processedCount >= TOTAL_PASSENGERS) ? 'flex' : 'none';
+
+            // History Table
+            if (state.history.length > 0) {
+                dom.historySection.style.display = 'block';
+                dom.historyTableBody.innerHTML = '';
+                state.history.forEach((run, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition-colors';
+                    tr.innerHTML = `
+                        <td class="px-6 py-3 font-mono text-slate-400">${index + 1}</td>
+                        <td class="px-6 py-3 font-bold text-slate-800">${run.batchSize}</td>
+                        <td class="px-6 py-3 font-mono text-slate-600">${run.totalBuses}</td>
+                        <td class="px-6 py-3 text-blue-600 font-mono">${run.flowTime} minutes</td>
+                        <td class="px-6 py-3 text-red-600 font-mono">${run.idleTime} minutes</td>
+                    `;
+                    dom.historyTableBody.appendChild(tr);
+                });
+            } else {
+                dom.historySection.style.display = 'none';
+            }
+        }
+
+        function resetSim() {
+            state.isPlaying = false;
+            clearInterval(simInterval);
+            state.timeElapsed = 0;
+            state.planeCount = TOTAL_PASSENGERS;
+            state.loadingBusLoad = 0;
+            state.travelingBuses = [];
+            state.immigrationQueue = 0;
+            state.processedCount = 0;
+            state.immigrationIdleTime = 0;
+            updateDOM();
+        }
+
+        function simTick() {
+            // 0. Update Metrics
+            state.timeElapsed++;
+            
+            const isIdle = state.immigrationQueue === 0 && state.processedCount < TOTAL_PASSENGERS;
+            if (isIdle) {
+                state.immigrationIdleTime++;
+            }
+
+            // 1. IMMIGRATION: Process queue
+            let processedThisTick = 0;
+            if (state.immigrationQueue > 0) {
+                processedThisTick = Math.min(state.immigrationQueue, PROCESS_RATE);
+                state.immigrationQueue -= processedThisTick;
+            }
+            state.processedCount += processedThisTick;
+
+            // 2. TRAVEL: Move buses
+            let arrivedPassengers = 0;
+            const nextBuses = [];
+            
+            state.travelingBuses.forEach(bus => {
+                if (bus.progress < 100) {
+                    nextBuses.push({ ...bus, progress: bus.progress + (100 / TRAVEL_TIME) });
+                } else {
+                    arrivedPassengers += bus.load;
+                }
+            });
+            
+            if (arrivedPassengers > 0) {
+                state.immigrationQueue += arrivedPassengers;
+            }
+            state.travelingBuses = nextBuses;
+
+            // 3. BOARDING: Plane -> Loading Bus
+            if (state.planeCount > 0) {
+                const boardingNow = Math.min(state.planeCount, BOARDING_RATE);
+                const newLoad = state.loadingBusLoad + boardingNow;
+                
+                const isFull = newLoad >= state.batchSize;
+                const isLastGroup = (state.planeCount - boardingNow) === 0;
+
+                if (isFull || (isLastGroup && newLoad > 0)) {
+                    // Dispatch Bus
+                    state.travelingBuses.push({ id: Date.now(), load: newLoad, progress: 0 });
+                    state.loadingBusLoad = 0; // Start empty bus
+                } else {
+                    state.loadingBusLoad = newLoad;
+                }
+
+                state.planeCount -= boardingNow;
+            }
+
+            // Check for completion
+            if (state.processedCount >= TOTAL_PASSENGERS) {
+                state.isPlaying = false;
+                clearInterval(simInterval);
+                state.history.push({
+                    id: Date.now(),
+                    batchSize: state.batchSize,
+                    totalBuses: Math.ceil(TOTAL_PASSENGERS / state.batchSize),
+                    flowTime: state.timeElapsed,
+                    idleTime: state.immigrationIdleTime
+                });
+            }
+
+            updateDOM();
+        }
+
+        // --- Event Listeners ---
+
+        dom.batchSizeInput.addEventListener('input', (e) => {
+            state.batchSize = Number(e.target.value);
+            resetSim(); // Changing batch size resets the sim
+        });
+
+        dom.playBtn.addEventListener('click', () => {
+            state.isPlaying = !state.isPlaying;
+            if (state.isPlaying) {
+                simInterval = setInterval(simTick, SIMULATION_SPEED);
+            } else {
+                clearInterval(simInterval);
+            }
+            updateDOM();
+        });
+
+        dom.resetBtn.addEventListener('click', resetSim);
+
+        dom.clearHistoryBtn.addEventListener('click', () => {
+            state.history = [];
+            updateDOM();
+        });
+
+        // Initialize UI
+        updateDOM();
+
+    </script></p></body></html>
