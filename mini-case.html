@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYU Stern - Professional Responsibility Boardroom Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nyu: {
+                            violet: '#57068c',
+                            light: '#7b2cbf',
+                            ultraLight: '#f3ebf7',
+                            dark: '#300250'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#f0f2f5] text-slate-800 min-h-screen py-6 px-4 md:px-8">
+
+<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden border-t-8 border-nyu-violet my-4">
+
+    <!-- NYU Stern Executive Branding -->
+    <header class="bg-white border-b border-slate-100 p-6 text-center">
+        <div class="text-xs font-bold tracking-[0.2em] text-nyu-violet mb-2">NYU STERN SCHOOL OF BUSINESS</div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Professional Responsibility Boardroom Simulation</h1>
+        <p class="text-sm md:text-base text-slate-500 mt-1">Interactive Boardroom Case Study for Executive Leadership</p>
+    </header>
+
+    <div id="lobby-screen" class="p-6 md:p-8 space-y-6 fade-in">
+        <div class="bg-nyu-ultraLight border-l-4 border-nyu-violet p-5 rounded-r-lg">
+            <h2 class="font-bold text-lg text-nyu-dark mb-2">Your Assigned Role: Lead Independent Director</h2>
+            <p class="text-sm text-slate-700 leading-relaxed">
+                To fully understand fiduciary principles, we must observe how they operate under fire.
+                In this scenario, you are the <strong>Lead Independent Director of Zenith Technologies (NASDAQ: ZNTH)</strong>,
+                a high-growth autonomous systems manufacturer. You have been selected to protect shareholder interests during a turbulent sequence of corporate events.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Profile Card -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="text-xs font-bold text-nyu-violet uppercase mb-1">Character Profile</div>
+                    <h3 class="font-bold text-slate-800 text-base">Alex Mercer, MBA</h3>
+                    <p class="text-xs text-slate-500 mt-1">15 years in enterprise governance. Known for independent ethics and deep legal literacy.</p>
+                </div>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-1 rounded w-fit mt-3">Active Persona</span>
+            </div>
+
+            <!-- Company Profile -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <div class="text-xs font-bold text-nyu-violet uppercase mb-1">The Enterprise</div>
+                <h3 class="font-bold text-slate-800 text-base">Zenith Technologies</h3>
+                <p class="text-xs text-slate-500 mt-1">Publicly-traded. Incorporated in Delaware. Currently seeking a major market expansion through automated logistics acquisitions.</p>
+            </div>
+
+            <!-- Your Mandate -->
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <div class="text-xs font-bold text-nyu-violet uppercase mb-1">Your Objective</div>
+                <h3 class="font-bold text-slate-800 text-base">Maintain Fiduciary Guardrails</h3>
+                <p class="text-xs text-slate-500 mt-1">Uphold your statutory duties of care and loyalty under intense operational pressure. Guard against legal liabilities.</p>
+            </div>
+        </div>
+
+        <div class="text-center pt-4">
+            <button onclick="startSimulation()" class="bg-nyu-violet hover:bg-nyu-dark text-white px-8 py-3 rounded-lg font-bold text-base transition-colors shadow-md hover:shadow-lg w-full md:w-auto">
+                Enter the Boardroom &rarr;
+            </button>
+        </div>
+    </div>
+
+    <div id="sim-screen" class="hidden">
+
+        <!-- Simulation Progress & Status Dashboard -->
+        <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-nyu-violet text-white text-xs font-bold px-2.5 py-1 rounded">STAGE <span id="current-stage-num">1</span>/5</div>
+                <span id="stage-title" class="text-sm font-semibold text-slate-700">Dilemma 1: The CEO's Acquisition Deal</span>
+            </div>
+            <!-- Interactive Progress Blocks -->
+            <div class="flex space-x-1.5" id="progress-indicator-blocks">
+                <div class="w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300" id="dot-1"></div>
+                <div class="w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300" id="dot-2"></div>
+                <div class="w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300" id="dot-3"></div>
+                <div class="w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300" id="dot-4"></div>
+                <div class="w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300" id="dot-5"></div>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8">
+
+            <!-- Question 1 -->
+            <div class="question-card block fade-in" id="card-1">
+                <div class="text-xs uppercase tracking-wider font-bold text-nyu-violet mb-1">Part 1: Conflict of Interest</div>
+                <h3 class="text-xl font-bold text-slate-950 mb-4">The CEO's Family Acquisition</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    Zenith’s charismatic CEO, Marcus Vance, presents a rushed proposal to acquire <strong class="text-slate-800">Apex Robotics</strong>, a private supplier of sensors, for $85 million. As Lead Independent Director, you discover through a private channels review that Apex is owned by Marcus's immediate brother-in-law. Marcus has kept this connection hidden and pushes the Board for an immediate vote this afternoon to "beat our competitors."
+                </p>
+                <div class="space-y-3" id="options-1">
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-1" value="A" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>A. Support the fast track:</strong> Approve the acquisition immediately to avoid missing a key market opportunity. If the price is fair, no damage is done.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-1" value="B" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>B. Demand Full Disclosure and Recusal:</strong> Intervene publicly to halt the vote, demand Marcus fully disclose the interest on the record, form a committee of disinterested directors to evaluate the transaction, and exclude Marcus from the voting process.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-1" value="C" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>C. Compromise on a verbal agreement:</strong> Allow the vote to proceed to save face, but pull Marcus aside to get a verbal promise that Apex Robotics will drop their prices by 10% after the closing.</span>
+                    </label>
+                </div>
+                <!-- Action Row -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                    <div></div>
+                    <button onclick="submitAnswer(1, 'B')" class="bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-sub-1">Submit Executive Decision</button>
+                    <button onclick="nextStage(1)" class="hidden bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-next-1">Next Dilemma &rarr;</button>
+                </div>
+            </div>
+
+            <div class="question-card hidden fade-in" id="card-2">
+                <div class="text-xs uppercase tracking-wider font-bold text-nyu-violet mb-1">Part 2: Business Judgment Rule (BJR)</div>
+                <h3 class="text-xl font-bold text-slate-950 mb-4">The Risky Tech Shift</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    Following the Apex complications, Zenith is facing high volatility. Marcus proposes pivoting all development resources toward a speculative solid-state battery technology. Although you think it is highly risky, Marcus has commissioned extensive, independent, and comprehensive third-party scientific studies that validate the tech. How must you act to ensure your decisions are shielded by Delaware’s <strong>Business Judgment Rule (BJR)</strong>?
+                </p>
+                <div class="space-y-3" id="options-2">
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-2" value="A" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>A. Rely on the BJR's Presumption of Good Faith:</strong> Ensure you and the other independent directors review all reports, ask critical questions, record the deliberations, and make a good-faith, informed business decision based on the facts provided, even if the pivot eventually fails.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-2" value="B" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>B. Defer Entirely to Marcus:</strong> Trust Marcus’s intuition completely without reading the lengthy scientific reports, because the BJR automatically shields directors regardless of how much effort they put in.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-2" value="C" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>C. Veto the Pivot:</strong> Veto any proposal that could result in any potential financial loss for the company to guarantee shareholders never experience a downturn.</span>
+                    </label>
+                </div>
+                <!-- Action Row -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                    <button onclick="prevStage(2)" class="text-slate-500 hover:text-slate-800 text-sm font-semibold">&larr; Go Back</button>
+                    <button onclick="submitAnswer(2, 'A')" class="bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-sub-2">Submit Executive Decision</button>
+                    <button onclick="nextStage(2)" class="hidden bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-next-2">Next Dilemma &rarr;</button>
+                </div>
+            </div>
+
+            <div class="question-card hidden fade-in" id="card-3">
+                <div class="text-xs uppercase tracking-wider font-bold text-nyu-violet mb-1">Part 3: Corporate Opportunities</div>
+                <h3 class="text-xl font-bold text-slate-950 mb-4">The Spinoff Patent</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    A research university approaches Zenith with a proprietary license for solid-state material processing. This license falls perfectly inside Zenith's core line of business. During a coffee break, another board member whispers to you: "Zenith's board is too slow to adopt this. Let's form our own personal LLC, purchase the license ourselves, and lease it back to Zenith at a premium."
+                </p>
+                <div class="space-y-3" id="options-3">
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-3" value="A" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>A. Join the personal LLC:</strong> Since the university approached you individually, this counts as a personal venture opportunity and is perfectly fair game.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-3" value="B" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>B. Present it first to Zenith's Board:</strong> Reject the private venture, report the opportunity to Zenith’s board, and allow the company to evaluate and officially reject the opportunity before anyone on the board pursues it personally.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-3" value="C" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>C. Quietly buy it yourself:</strong> Skip the other board member to avoid sharing profits, buy it personally, and wait until next year to disclose the patent acquisition.</span>
+                    </label>
+                </div>
+                <!-- Action Row -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                    <button onclick="prevStage(3)" class="text-slate-500 hover:text-slate-800 text-sm font-semibold">&larr; Go Back</button>
+                    <button onclick="submitAnswer(3, 'B')" class="bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-sub-3">Submit Executive Decision</button>
+                    <button onclick="nextStage(3)" class="hidden bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-next-3">Next Dilemma &rarr;</button>
+                </div>
+            </div>
+
+            <div class="question-card hidden fade-in" id="card-4">
+                <div class="text-xs uppercase tracking-wider font-bold text-nyu-violet mb-1">Part 4: Caremark Duties</div>
+                <h3 class="text-xl font-bold text-slate-950 mb-4">The Safety Red Flag</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    An anonymous whistleblower from your logistics software division files a complaint alleging that a core product package contains critical sensor flaws that could cause automated systems to fail. Marcus assures you, "We've got an internal team reviewing it next quarter, don't worry about standard safety alerts." Under Delaware's <strong>Caremark</strong> guidelines, what must you do?
+                </p>
+                <div class="space-y-3" id="options-4">
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-4" value="A" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>A. Rely on Marcus's reassurance:</strong> Marcus is the CEO and managing officer. It is his duty to handle operations, while your board role is strictly high-level, allowing you to ignore the warning.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-4" value="B" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>B. Demand active oversight and reporting channels:</strong> Insist the board is immediately briefed, ensure a formal internal audit is expedited, track the remediation metrics on an ongoing basis, and verify that functional, independent reporting systems exist.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-4" value="C" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>C. Hire a private investigator:</strong> Conduct an off-the-books investigation to find the whistleblower and terminate them to prevent leaks.</span>
+                    </label>
+                </div>
+                <!-- Action Row -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                    <button onclick="prevStage(4)" class="text-slate-500 hover:text-slate-800 text-sm font-semibold">&larr; Go Back</button>
+                    <button onclick="submitAnswer(4, 'B')" class="bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-sub-4">Submit Executive Decision</button>
+                    <button onclick="nextStage(4)" class="hidden bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-next-4">Next Dilemma &rarr;</button>
+                </div>
+            </div>
+
+            <div class="question-card hidden fade-in" id="card-5">
+                <div class="text-xs uppercase tracking-wider font-bold text-nyu-violet mb-1">Part 5: Corporate Objective</div>
+                <h3 class="text-xl font-bold text-slate-950 mb-4">The Activist Hostile Takeover</h3>
+                <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                    An activist investment firm, Apex Capital, acquires a 9% stake in Zenith and demands that the board cancel its long-term sustainable energy R&D program to distribute an immediate, one-time cash dividend. Delaware courts govern the core objective of public fiduciaries. How must you weigh this short-term pressure against your duties?
+                </p>
+                <div class="space-y-3" id="options-5">
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-5" value="A" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>A. Comply with the immediate payout:</strong> Your fiduciary duties dictate maximizing immediate cash profits for current stock traders, regardless of the company's survival over the next five years.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-5" value="B" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>B. Prioritize long-term shareholder value:</strong> Reject the immediate payout if it undermines Zenith’s competitive durability. Fiduciary duties under Delaware law require prioritizing sustainable, long-term shareholder value creation over fleeting stock price boosts.</span>
+                    </label>
+                    <label class="flex items-start p-4 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-nyu-light hover:bg-nyu-ultraLight transition-all">
+                        <input type="radio" name="opt-5" value="C" class="mt-1 mr-3 accent-nyu-violet">
+                        <span class="text-sm text-slate-700"><strong>C. Transition to a pure non-profit:</strong> Restructure Zenith into a charity to completely escape any obligations to shareholders.</span>
+                    </label>
+                </div>
+                <!-- Action Row -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                    <button onclick="prevStage(5)" class="text-slate-500 hover:text-slate-800 text-sm font-semibold">&larr; Go Back</button>
+                    <button onclick="submitAnswer(5, 'B')" class="bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-sub-5">Submit Executive Decision</button>
+                    <button onclick="finishAssessment()" class="hidden bg-nyu-violet hover:bg-nyu-dark text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors" id="btn-finish">Analyze Corporate Standing</button>
+                </div>
+            </div>
+
+            <div id="feedback-panel" class="hidden mt-6 p-5 rounded-lg border-l-4 fade-in">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 mt-0.5" id="feedback-icon"></div>
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-800 uppercase tracking-wider mb-1" id="feedback-status-title">DECISION FILED</h4>
+                        <p class="text-xs text-slate-500 font-semibold mb-2">Legal Counsel Risk Evaluation:</p>
+                        <p class="text-sm text-slate-700 leading-relaxed" id="feedback-text"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="results-screen" class="hidden p-6 md:p-8 fade-in text-center">
+        <div class="max-w-md mx-auto space-y-6">
+
+            <div class="score-circle w-32 h-32 rounded-full bg-nyu-ultraLight border-4 border-nyu-violet flex flex-col justify-center items-center mx-auto shadow-md">
+                <div class="text-4xl font-extrabold text-nyu-violet" id="score-val">0</div>
+                <div class="text-xs text-slate-500 font-semibold tracking-wider">OUT OF 5</div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900" id="results-headline">Assessment Terminated</h2>
+                <p class="text-sm text-slate-500 mt-2" id="results-text">Evaluating governance standing...</p>
+            </div>
+
+            <!-- Detailed Performance Breakdown Table -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-left">
+                <h3 class="text-xs font-bold text-nyu-violet uppercase tracking-wider mb-3 text-center">Executive Competency Metrics</h3>
+                <div class="space-y-2 text-sm text-slate-700">
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="font-medium">Conflict Mitigation:</span>
+                        <span id="metric-1" class="font-semibold text-emerald-600">--</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="font-medium">Business Judgment Shield:</span>
+                        <span id="metric-2" class="font-semibold text-emerald-600">--</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="font-medium">Corporate Opportunity Doctrine:</span>
+                        <span id="metric-3" class="font-semibold text-emerald-600">--</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-slate-100">
+                        <span class="font-medium">Caremark Compliance Oversight:</span>
+                        <span id="metric-4" class="font-semibold text-emerald-600">--</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="font-medium">Long-Term Value Maximization:</span>
+                        <span id="metric-5" class="font-semibold text-emerald-600">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button onclick="restartSimulation()" class="bg-nyu-violet hover:bg-nyu-dark text-white px-8 py-3 rounded-lg font-bold text-sm transition-colors shadow shadow-nyu-light">
+                    Re-Enter Boardroom Simulation
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let userScore = 0;
+    const stageTitles = [
+        "Dilemma 1: The CEO's Acquisition Deal",
+        "Dilemma 2: The Speculative Tech Pivot",
+        "Dilemma 3: The Licensing Spinoff Opportunity",
+        "Dilemma 4: The Safety Whistleblower Crisis",
+        "Dilemma 5: The Hostile Activist Demands"
+    ];
+
+    const modelExplanations = {
+        1: {
+            correct: "B",
+            text: "Any choice other than B is a severe legal failure. Supporting a fast-track without disclosure (Option A) or relying on a verbal compromise (Option C) violates the Duty of Loyalty. Under Delaware law, self-dealing transactions by conflicted officers are evaluated under the strict 'Entire Fairness' standard rather than the lenient Business Judgment Rule, exposing the board to direct personal liability."
+        },
+        2: {
+            correct: "A",
+            text: "Any choice other than A is a severe legal failure. Deferring entirely to management (Option B) or vetoing reasonable business risks (Option C) are flawed strategies. The Business Judgment Rule does not protect negligence or passive ignorance; to earn its legal shield, directors must actively review reports, ask critical questions, and document their deliberations."
+        },
+        3: {
+            correct: "B",
+            text: "Any choice other than B is a severe legal failure. Joining a personal LLC (Option A) or quietly buying the license yourself (Option C) constitutes a direct usurpation of a corporate asset. Under the Corporate Opportunity Doctrine, directors are strictly barred from taking ventures that fall within the firm's line of business without formal board review and rejection."
+        },
+        4: {
+            correct: "B",
+            text: "Any choice other than B is a severe legal failure. Relying on management's verbal reassurance (Option A) or attempting an off-the-books investigation/termination (Option C) exposes directors to personal liability. Under Delaware's Caremark precedent, directors have an active, non-delegable duty to maintain formal, functional reporting channels to monitor compliance risks."
+        },
+        5: {
+            correct: "B",
+            text: "Any choice other than B is a severe legal failure. Complying with immediate payout demands (Option A) or transitioning to a charity (Option C) violates your corporate mandate. Delaware law dictates that the ultimate objective of corporate fiduciaries is to maximize sustainable, long-term shareholder value, not to yield to short-term liquidation pressures."
+        }
+    };
+
+    let userChoices = {};
+
+    function startSimulation() {
+        document.getElementById('lobby-screen').classList.add('hidden');
+        document.getElementById('sim-screen').classList.remove('hidden');
+        updateProgressBlocks(1);
+    }
+
+    function selectOptionVisuals(qNum) {
+        const container = document.getElementById(`options-${qNum}`);
+        container.querySelectorAll('label').forEach(label => {
+            const input = label.querySelector('input');
+            if (input.checked) {
+                label.classList.add('border-nyu-violet', 'bg-nyu-ultraLight');
+            } else {
+                label.classList.remove('border-nyu-violet', 'bg-nyu-ultraLight');
+            }
+        });
+    }
+
+    // Attach click events on labels to automatically adjust state styling
+    for (let i = 1; i <= 5; i++) {
+        const container = document.getElementById(`options-${i}`);
+        container.querySelectorAll('label').forEach(lbl => {
+            lbl.addEventListener('click', () => {
+                selectOptionVisuals(i);
+            });
+        });
+    }
+
+    function submitAnswer(qNum, correctVal) {
+        const selectedInput = document.querySelector(`input[name="opt-${qNum}"]:checked`);
+        if (!selectedInput) {
+            // Replaced generic alerts with integrated error display
+            const feedbackPanel = document.getElementById('feedback-panel');
+            feedbackPanel.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-500', 'bg-rose-50', 'border-rose-500');
+            feedbackPanel.classList.add('bg-amber-50', 'border-amber-500');
+            document.getElementById('feedback-status-title').innerText = "ACTION REQUIRED";
+            document.getElementById('feedback-text').innerText = "Please select an executive policy option before finalizing the vote.";
+            document.getElementById('feedback-icon').innerHTML = `<svg class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+            return;
+        }
+
+        const userVal = selectedInput.value;
+        userChoices[qNum] = userVal;
+
+        // Disabling further options selection for this stage
+        const container = document.getElementById(`options-${qNum}`);
+        container.querySelectorAll('input').forEach(inp => inp.disabled = true);
+
+        const feedbackPanel = document.getElementById('feedback-panel');
+        const feedbackText = document.getElementById('feedback-text');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const statusTitle = document.getElementById('feedback-status-title');
+
+        feedbackPanel.classList.remove('hidden', 'bg-amber-50', 'border-amber-500');
+
+        if (userVal === correctVal) {
+            userScore++;
+            feedbackPanel.classList.add('bg-emerald-50', 'border-emerald-500');
+            statusTitle.className = "font-bold text-sm text-emerald-800 uppercase tracking-wider mb-1";
+            statusTitle.innerText = "MINIMUM LEGAL STANDARD MET";
+            feedbackText.innerText = modelExplanations[qNum].text;
+            feedbackIcon.innerHTML = `<svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+        } else {
+            feedbackPanel.classList.add('bg-rose-50', 'border-rose-500');
+            statusTitle.className = "font-bold text-sm text-rose-800 uppercase tracking-wider mb-1";
+            statusTitle.innerText = "INCORRECT - FIDUCIARY BREACH DETECTED";
+            feedbackText.innerHTML = `<strong>Your Choice: ${userVal} (WRONG DECISION)</strong>.<br><br>${modelExplanations[qNum].text}`;
+            feedbackIcon.innerHTML = `<svg class="h-6 w-6 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+        }
+
+        // Handle buttons toggle
+        document.getElementById(`btn-sub-${qNum}`).classList.add('hidden');
+        if (qNum < 5) {
+            document.getElementById(`btn-next-${qNum}`).classList.remove('hidden');
+        } else {
+            document.getElementById('btn-finish').classList.remove('hidden');
+        }
+    }
+
+    function nextStage(currentNum) {
+        const nextNum = currentNum + 1;
+        document.getElementById(`card-${currentNum}`).classList.add('hidden');
+        document.getElementById(`card-${nextNum}`).classList.remove('hidden');
+        document.getElementById('feedback-panel').classList.add('hidden');
+
+        // Update headers and dashboard
+        document.getElementById('current-stage-num').innerText = nextNum;
+        document.getElementById('stage-title').innerText = stageTitles[nextNum - 1];
+        updateProgressBlocks(nextNum);
+    }
+
+    function prevStage(currentNum) {
+        const prevNum = currentNum - 1;
+        document.getElementById(`card-${currentNum}`).classList.add('hidden');
+        document.getElementById(`card-${prevNum}`).classList.remove('hidden');
+        document.getElementById('feedback-panel').classList.add('hidden');
+
+        // Restore button state
+        document.getElementById(`btn-sub-${prevNum}`).classList.remove('hidden');
+        document.getElementById(`btn-next-${prevNum}`).classList.add('hidden');
+
+        // Re-enable options
+        const container = document.getElementById(`options-${prevNum}`);
+        container.querySelectorAll('input').forEach(inp => inp.disabled = false);
+
+        document.getElementById('current-stage-num').innerText = prevNum;
+        document.getElementById('stage-title').innerText = stageTitles[prevNum - 1];
+        updateProgressBlocks(prevNum);
+    }
+
+    function updateProgressBlocks(activeNum) {
+        for (let i = 1; i <= 5; i++) {
+            const block = document.getElementById(`dot-${i}`);
+            if (i < activeNum) {
+                block.className = "w-8 h-2.5 rounded-full bg-nyu-violet transition-colors duration-300";
+            } else if (i === activeNum) {
+                block.className = "w-8 h-2.5 rounded-full bg-nyu-light ring-2 ring-nyu-ultraLight transition-colors duration-300";
+            } else {
+                block.className = "w-8 h-2.5 rounded-full bg-slate-200 transition-colors duration-300";
+            }
+        }
+    }
+
+    function finishAssessment() {
+        document.getElementById('sim-screen').classList.add('hidden');
+        document.getElementById('results-screen').classList.remove('hidden');
+        document.getElementById('score-val').innerText = userScore;
+
+        const headline = document.getElementById('results-headline');
+        const text = document.getElementById('results-text');
+
+        // Set Metric Table Colors based on performance
+        for (let i = 1; i <= 5; i++) {
+            const m = document.getElementById(`metric-${i}`);
+            if (userChoices[i] === modelExplanations[i].correct) {
+                m.innerText = "COMPLIANT";
+                m.className = "font-semibold text-emerald-600";
+            } else {
+                m.innerText = "BREACH/RISK";
+                m.className = "font-semibold text-rose-600";
+            }
+        }
+
+        if (userScore === 5) {
+            headline.innerText = "Baseline Fiduciary Compliance Met";
+            text.innerText = "You have successfully avoided personal liability by meeting the baseline legal requirements under Delaware law. However, any deviation from these strict principles in real-world boardroom scenarios will result in immediate legal action and personal exposure.";
+        } else if (userScore >= 3) {
+            headline.innerText = "Severe Liability Exposure";
+            text.innerText = "You failed multiple critical governance tests. The corporate and legal blind spots identified below represent direct paths to shareholder lawsuits, regulatory penalties, and personal financial liability. Review the risk assessments carefully.";
+        } else {
+            headline.innerText = "Fiduciary Failure & Legal Liability";
+            text.innerText = "Catastrophic governance failure. Your decisions actively violated the duties of care and loyalty, exposing you and Zenith Technologies to immediate personal liability and class-action litigation. You failed to protect the corporate entity.";
+        }
+    }
+
+    function restartSimulation() {
+        userScore = 0;
+        userChoices = {};
+
+        // Reset inputs and classes
+        for (let i = 1; i <= 5; i++) {
+            const container = document.getElementById(`options-${i}`);
+            container.querySelectorAll('input').forEach(inp => {
+                inp.checked = false;
+                inp.disabled = false;
+            });
+            container.querySelectorAll('label').forEach(lbl => {
+                lbl.classList.remove('border-nyu-violet', 'bg-nyu-ultraLight');
+            });
+            document.getElementById(`btn-sub-${i}`).classList.remove('hidden');
+            document.getElementById(`btn-next-${i}`).classList.add('hidden');
+        }
+
+        document.getElementById('btn-finish').classList.add('hidden');
+        document.getElementById('feedback-panel').classList.add('hidden');
+        document.getElementById('results-screen').classList.add('hidden');
+        document.getElementById('lobby-screen').classList.remove('hidden');
+
+        // Reset cards active class
+        document.querySelectorAll('.question-card').forEach(card => card.classList.add('hidden'));
+        document.getElementById('card-1').classList.remove('hidden');
+        document.getElementById('current-stage-num').innerText = "1";
+        document.getElementById('stage-title').innerText = stageTitles[0];
+    }
+</script>
+</body>
+</html>
